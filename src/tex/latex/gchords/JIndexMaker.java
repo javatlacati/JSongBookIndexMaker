@@ -10,35 +10,34 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
- * @author Administrador
+ * @author Javatlacati
  */
 public class JIndexMaker {
 
-    public static void main(String[] args) {
-        System.out.println("Welcome to JIndexMaker this app was designed to work with the Songbook latex package");
-        System.out.println("Usage: Select the file on the GUI, and this app will process it automatically according to the file extension");
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "Index Preprocessed files", "aIdx", "tIdx", "kIdx");
+    public static void main(final String[] args) {
+        System.out.println(org.openide.util.NbBundle.getBundle(JIndexMaker.class).getString("WELCOME"));
+        System.out.println(org.openide.util.NbBundle.getBundle(JIndexMaker.class).getString("USAGE"));
+        final JFileChooser chooser = new JFileChooser();
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                org.openide.util.NbBundle.getBundle(JIndexMaker.class).getString("INDEXPREPROCESSEDFILES"), "aIdx", "tIdx", "kIdx"); //NOI18N
         chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(null);
+        final int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            String filename = chooser.getSelectedFile().getName();
-            int extensionIndex = filename.lastIndexOf(".");
-            String filenamewoextension = filename.substring(0, extensionIndex );
-            System.out.println("You chose to open this file: "
+            final String filename = chooser.getSelectedFile().getName();
+            final int extensionIndex = filename.lastIndexOf("."); //NOI18N
+            String filenamewoextension = filename.substring(0, extensionIndex);
+            System.out.println(org.openide.util.NbBundle.getBundle(JIndexMaker.class).getString("YOUCHOSE")
                     + filename);
-            String extension = filename.substring(extensionIndex+1);
+            String extension = filename.substring(extensionIndex + 1);
             System.out.println("The file has extension:" + extension);
-            System.out.println("Su archivo se llama:"+filenamewoextension);
+            System.out.println("Su archivo se llama:" + filenamewoextension);
             String comando = "";
             switch (extension) {
                 case "aIdx":
                     try {
                         System.out.println("Processing author index preprocessed file");
-                        comando="makeindex -s songbook.ist -o " + filenamewoextension + ".adx " + filename;
-                        System.out.println("Ejecutando:"+comando);
+                        comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".adx " + filename;
+                        System.out.println("Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
                         System.err.println("Erro executing due to " + ex.getMessage());
@@ -47,18 +46,18 @@ public class JIndexMaker {
                 case "tIdx":
                     try {
                         System.out.println("Processing title index preprocessed file");
-                        comando="makeindex -s songbook.ist -o " + filenamewoextension + ".tdx " + filename;
-                        System.out.println("Ejecutando:"+comando);
+                        comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".tdx " + filename;
+                        System.out.println("Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
                         System.err.println("Erro executing due to " + ex.getMessage());
                     }
                     break;
-                    case "kIdx":
+                case "kIdx":
                     try {
                         System.out.println("Processing key index preprocessed file");
-                        comando="makeindex -s songbook.ist -o " + filenamewoextension + ".kdx " + filename;
-                        System.out.println("Ejecutando:"+comando);
+                        comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".kdx " + filename;
+                        System.out.println("Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
                         System.err.println("Erro executing due to " + ex.getMessage());
