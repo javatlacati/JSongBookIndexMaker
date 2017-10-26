@@ -342,26 +342,34 @@ Public License instead of this License.
  */
 package tex.latex.gchords;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Javatlacati
  */
 public class JIndexMaker {
 
-    public static void main(final String[] args) {
-
+    /**
+     * Application entry point.
+     */
+    public static void main(final String... args) {
+        final Logger logger = Logger.getLogger(JIndexMaker.class.getName());
+        boolean debug = Arrays.stream(args).anyMatch(parameter -> parameter.equalsIgnoreCase("debug"));
+        if (!debug) {
+            logger.setLevel(Level.SEVERE);
+        }
         Properties prop = new Properties();
         try (InputStream input = JIndexMaker.class.getResourceAsStream("/tex/latex/gchords/JIndexMaker.properties")) {
             prop.load(input);
         } catch (IOException ex) {
-            Logger.getLogger(JIndexMaker.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
 
         System.out.println(prop.getProperty("WELCOME"));
@@ -375,49 +383,49 @@ public class JIndexMaker {
             final String filename = chooser.getSelectedFile().getName();
             final int extensionIndex = filename.lastIndexOf("."); //NOI18N
             String filenamewoextension = filename.substring(0, extensionIndex);
-            System.out.println(prop.getProperty("YOUCHOSE")
+            logger.log(Level.INFO, prop.getProperty("YOUCHOSE")
                     + filename);
             String extension = filename.substring(extensionIndex + 1);
-            System.out.println("The file has extension:" + extension);
-            System.out.println("Su archivo se llama:" + filenamewoextension);
+            logger.log(Level.INFO, "The file has extension:" + extension);
+            logger.log(Level.INFO, "Su archivo se llama:" + filenamewoextension);
             String comando;
             switch (extension) {
                 case "aIdx":
                     try {
-                        System.out.println("Processing author index preprocessed file");
+                        logger.log(Level.INFO, "Processing author index preprocessed file");
                         comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".adx " + filename;
-                        System.out.println("Ejecutando:" + comando);
+                        logger.log(Level.INFO, "Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
-                        System.err.println("Erro executing due to " + ex.getMessage());
+                        logger.log(Level.INFO, "Erro executing due to ", ex);
                     }
                     break;
                 case "tIdx":
                     try {
-                        System.out.println("Processing title index preprocessed file");
+                        logger.log(Level.INFO, "Processing title index preprocessed file");
                         comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".tdx " + filename;
-                        System.out.println("Ejecutando:" + comando);
+                        logger.log(Level.INFO, "Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
-                        System.err.println("Erro executing due to " + ex.getMessage());
+                        logger.log(Level.INFO, "Erro executing due to ", ex);
                     }
                     break;
                 case "kIdx":
                     try {
-                        System.out.println("Processing key index preprocessed file");
+                        logger.log(Level.INFO, "Processing key index preprocessed file");
                         comando = "makeindex -s songbook.ist -o " + filenamewoextension + ".kdx " + filename;
-                        System.out.println("Ejecutando:" + comando);
+                        logger.log(Level.FINEST, "Ejecutando:" + comando);
                         Runtime.getRuntime().exec(comando);
                     } catch (IOException ex) {
-                        System.err.println("Erro executing due to " + ex.getMessage());
+                        logger.log(Level.SEVERE, "Erro executing due to ", ex);
                     }
                     break;
                 default:
-                    System.err.println("Invalid file type! O.o");
+                    logger.log(Level.SEVERE, "Invalid file type! O.o");
                     break;
             }
         } else {
-            System.err.println("User cancelled");
+            logger.log(Level.SEVERE, "User cancelled");
         }
     }
 }
