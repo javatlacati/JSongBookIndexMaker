@@ -378,6 +378,7 @@ public class JIndexMaker {
         final FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 prop.getProperty("INDEXPREPROCESSEDFILES"), "aIdx", "tIdx", "kIdx"); //NOI18N
         chooser.setFileFilter(filter);
+        chooser.setCurrentDirectory(new java.io.File(".")); //NOI18N
 
         final int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
