@@ -366,7 +366,7 @@ public class JIndexMaker {
             logger.setLevel(Level.SEVERE);
         }
         Properties prop = new Properties();
-        try (InputStream input = JIndexMaker.class.getResourceAsStream("/tex/latex/gchords/JIndexMaker.properties")) {
+        try (InputStream input = JIndexMaker.class.getResourceAsStream("/JIndexMaker.properties")) {
             prop.load(input);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
@@ -378,6 +378,7 @@ public class JIndexMaker {
         final FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 prop.getProperty("INDEXPREPROCESSEDFILES"), "aIdx", "tIdx", "kIdx"); //NOI18N
         chooser.setFileFilter(filter);
+
         final int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             final String filename = chooser.getSelectedFile().getName();
